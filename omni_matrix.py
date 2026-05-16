@@ -5,11 +5,11 @@ import time
 import os
 from macro_safety import verify_macro_volatility
 
-# 🎯 DYNAMIC SYSTEM TRACKER ENGINE
+# DYNAMIC SYSTEM TRACKER ENGINE
 active_targets = {'XRP'}  
 system_state = {}
 ui_lock = asyncio.Lock()
-_background_tasks = set()  # Fix 2: Global tracker for dynamically spawned async tasks
+_background_tasks = set() 
 
 def initialize_asset_state(coin):
     if coin not in system_state:
@@ -51,7 +51,7 @@ WHALE_THRESHOLD = 100000
 VERIFIED_LEDGER_ASSETS = {'XRP', 'BTC', 'ETH', 'SOL', 'DOGE', 'RLUSD', 'USDT', 'USDC', 'SOLO', 'CORE'}
 
 
-# --- CORE 1: SILENT MULTI-DAY DEPTH TRACKER ---
+#CORE 1: SILENT MULTI-DAY DEPTH TRACKER
 async def unified_exchange_scanner():
     print("🔌 [Core 1] Ingestion Pipe active. Tracking resting depth imbalance (Bids vs Asks)...")
     while True:
@@ -64,10 +64,10 @@ async def unified_exchange_scanner():
         await asyncio.sleep(10)
 
 
-# --- CORE 2: DYNAMIC ON-CHAIN BURST SCANNER ---
+#  CORE 2: DYNAMIC ON-CHAIN BURST SCANNER 
 async def xrpl_vip_scanner():
     url = "wss://s1.ripple.com/"
-    print("🔌 [Core 2] XRPL Gatekeeper live. Multi-token processing routines initialized...")
+    print("🔌 [Core 2]  Gatekeeper live. Multi-token processing routines initialized...")
     
     while True:
         try:
@@ -129,15 +129,15 @@ async def xrpl_vip_scanner():
                                 print(f"➕ [{target_coin}] Secondary whale block bundled!")
                                 
         except websockets.exceptions.ConnectionClosed:
-            print("⚠️ XRPL WebSocket disconnected. Reconnecting in 3s...")
+            print("⚠️  WebSocket disconnected. Reconnecting in 3s...")
             await asyncio.sleep(3)
         except Exception as e:
             # Fix 3: Log operational stream faults to distinguish network drops from structural script errors
-            print(f"⚠️ XRPL Stream Error ({type(e).__name__}): {e}")
+            print(f"⚠️  Stream Error ({type(e).__name__}): {e}")
             await asyncio.sleep(3)
 
 
-# --- CORE 3: 15-SECOND WINDOW PROCESSOR & IMBALANCE EVALUATOR ---
+# CORE 3: 15-SECOND WINDOW PROCESSOR & IMBALANCE EVALUATOR 
 async def process_accumulation_window(coin):
     await asyncio.sleep(15)
     
@@ -172,19 +172,19 @@ async def process_accumulation_window(coin):
     else:
         core_bias = "⚪ NEUTRAL (Balanced Liquidity Distribution)"
         
-    print(f"\n" + "📊"*25)
+    print(f"\n" + "chart"*25)
     print(f"🎯 [{coin}] 15-SECOND ON-CHAIN & ORDER BOOK SUMMARY")
-    print(f"   📦 Total Bundled Flow: {total_volume:,.2f} {coin} across {txn_count} whale blocks.")
-    print(f"   🏦 Valid DOM Sources:  {ex_list}")
-    print(f"   ⚖️ Order Book Ratio:   Bids ${total_bids:,.0f} vs Asks ${total_asks:,.0f}")
-    print(f"   📈 Core Bias Verdict:  {core_bias}")
-    print("📊"*25)
+    print(f"    Total Bundled Flow: {total_volume:,.2f} {coin} across {txn_count} whale blocks.")
+    print(f"    Valid DOM Sources:  {ex_list}")
+    print(f"    Order Book Ratio:   Bids ${total_bids:,.0f} vs Asks ${total_asks:,.0f}")
+    print(f"    Core Bias Verdict:  {core_bias}")
+    print("chart"*25)
     
     await ask_final_execution_decision(coin, state)
     state["is_waiting_input"] = False
 
 
-# --- 🛠️ DYNAMIC CUSTOM TARGET GATEKEEPER ---
+# DYNAMIC CUSTOM TARGET GATEKEEPER
 async def ask_final_execution_decision(coin, state):
     def console_reader():
         while True:
@@ -193,7 +193,7 @@ async def ask_final_execution_decision(coin, state):
                 if ans in ["PLACE", "SKIP"]:
                     if ans == "SKIP":
                         while True:
-                            custom_target = input("\n🎯 Enter custom token ticker to verify & track on XRPL (e.g., RLUSD, SOLO) or press Enter to cancel: ").strip().upper()
+                            custom_target = input("\n Enter custom token ticker to verify & track on XRPL (e.g., RLUSD, SOLO) or press Enter to cancel: ").strip().upper()
                             if not custom_target:
                                 return "SKIP", ""
                                 
@@ -201,10 +201,10 @@ async def ask_final_execution_decision(coin, state):
                             time.sleep(1) 
                             
                             if custom_target not in VERIFIED_LEDGER_ASSETS:
-                                print(f"❌ FAIL ERROR: Token [{custom_target}] does not exist or lacks sufficient structural liquidity on the XRPL ledger!")
-                                print("👉 Let's try again. Please enter a valid ledger asset.")
+                                print(f" FAIL ERROR: Token [{custom_target}] does not exist or lacks sufficient structural liquidity on the XRPL ledger!")
+                                print(" Let's try again. Please enter a valid ledger asset.")
                             else:
-                                print(f"✅ TOKEN VERIFIED: [{custom_target}] confirmed active on XRPL Mainnet.")
+                                print(f" TOKEN VERIFIED: [{custom_target}] confirmed active on XRPL Mainnet.")
                                 return "SKIP", custom_target
                     return ans, ""
             except (EOFError, KeyboardInterrupt):
@@ -221,7 +221,7 @@ async def ask_final_execution_decision(coin, state):
         else:
             print(f"✅ Macro environment clear ({ai_verdict}). Limit orders successfully placed for {coin}!")
     else:
-        print(f"\n⏭️ Skipping {coin}. Muting asset for 60 seconds...")
+        print(f"\n Skipping {coin}. Muting asset for 60 seconds...")
         state["ignore_until"] = time.time() + 60
         
         if new_asset:
@@ -232,7 +232,7 @@ async def ask_final_execution_decision(coin, state):
 
 # --- MASTER ENGINE BOOT SEQUENCE ---
 async def main():
-    print("🚀 Master QUANTCOM: Multi-Threaded Order Flow Imbalance Engine Online!\n" + "="*70)
+    print(" Master QUANTCOM: Multi-Threaded Order Flow Imbalance Engine Online!\n" + "="*70)
     tasks = [
         asyncio.create_task(unified_exchange_scanner()),
         asyncio.create_task(xrpl_vip_scanner())
